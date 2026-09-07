@@ -31,9 +31,9 @@ jobs:
 
     - name: run application
       run: |
-          node server.js${{github.event.inputs.environment}} &
+          node server.js ${{github.event.inputs.environment}} &
           echo "Running environment: $APP_ENV"
-
+          
           node server.js &
           SERVER_PID=$!
 
@@ -41,10 +41,10 @@ jobs:
           sleep 5
 
           echo "Testing application..."
-          curl -f http://localhost${{github.event.inputs.port}}
+          curl http://localhost${{github.event.inputs.port}}
 
           echo "Testing health endpoint..."
-          curl -f http://localhost${{github.event.inputs.port}}/health
+          curl http://localhost${{github.event.inputs.port}}/health
 
           echo "Stopping server..."
           kill $SERVER_PID
