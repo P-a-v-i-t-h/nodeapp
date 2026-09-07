@@ -30,9 +30,8 @@ jobs:
     - run: npm install
 
     - name: run application
-      env:
-        APP_ENV: ${{github.event.inputs.environment}}
       run: |
+          node server.js${{github.event.inputs.environment}} &
           echo "Running environment: $APP_ENV"
 
           node server.js &
