@@ -19,5 +19,5 @@ jobs:
     - name: run application
       run:
           node server.js &
-          curl http://localhost:3000
-          curl http://localhost:3000/heath
+          curl http://localhost:8080
+          curl http://localhost:8080/heath
