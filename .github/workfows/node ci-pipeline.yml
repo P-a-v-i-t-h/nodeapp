@@ -5,7 +5,7 @@ on:
 
 jobs:
   node:
-    run on: ["lix-ubuntu"]
+    run on: ["Lix-ubuntu"]
     steps:
       - name: checkout code
         uses: actions/checkout@v7
