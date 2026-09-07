@@ -30,9 +30,22 @@ jobs:
     - run: npm install
 
     - name: run application
-      run:
-          node server.js & {{ github.event.input.environment}} &
+      env:
+        APP_ENV: ${{github.event.inputs.environment}}
+      run: |
+          echo "Running environment: $APP_ENV"
+
+          node server.js &
+          SERVER_PID=$!
+
+          echo "Waiting for application..."
           sleep 5
-          curl http://localhost:${{ github.event.inputs.port }}
-          curl http://localhost:${{ github.event.inputs.port }}/health
-          pkill -f "node server.js" ${{ github.event.inputs.environment}}
+
+          echo "Testing application..."
+          curl -f http://localhost${{github.event.inputs.port}}
+
+          echo "Testing health endpoint..."
+          curl -f http://localhost${{github.event.inputs.port}}/health
+
+          echo "Stopping server..."
+          kill $SERVER_PID
