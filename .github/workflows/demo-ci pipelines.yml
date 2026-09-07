@@ -1,0 +1,36 @@
+name: node-ci-pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    
+
+jobs:
+  node:
+    runs-on: ["Lix-ubuntu"]
+  
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 24
+        
+    - run: npm install
+
+    - name: run application
+      run:
+          node server.js &
+          SERVER_PID=$!
+          
+          echo "Waiting for server..."
+          sleep 5
+
+          echo "Testing application..."
+          curl -f http://localhost:3000
+
+          echo "Testing health endpoint..."
+          curl -f http://localhost:3000/health
+
+          echo "Stopping Node.js server..."
+          kill $SERVER_PID
