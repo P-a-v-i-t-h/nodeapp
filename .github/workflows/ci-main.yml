@@ -41,10 +41,10 @@ jobs:
           sleep 5
 
           echo "Testing application..."
-          curl --fail http://localhost${{github.event.inputs.port}}
+          curl --fail http://localhost:3000
 
           echo "Testing health endpoint..."
-          curl --fail http://localhost${{github.event.inputs.port}}/health
+          curl --fail http://localhost:3000/health
 
           echo "Stopping server..."
           kill $SERVER_PID
