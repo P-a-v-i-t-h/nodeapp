@@ -1,8 +1,21 @@
 name: node-ci-pipeline
 
 on:
-  push:
-    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: select the enviroment
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - development
+          - production
+      port:
+        description: select the port
+        required: true
+        default: "8080"
+  
 
 jobs:
   node:
@@ -13,11 +26,13 @@ jobs:
     - uses: actions/setup-node@v7
       with:
         node-version: 24
-        cache: 'npm'
+        
     - run: npm install
 
     - name: run application
       run:
-          node server.js &
-          curl http://localhost:8080
-          curl http://localhost:8080/heath
+          node server.js & {{ github.event.input.environment}} &
+          sleep 5
+          curl http://localhost:${{ github.event.inputs.port }}
+          curl http://localhost:${{ github.event.inputs.port }}/health
+          pkill -f "node server.js" ${{ github.event.inputs.environment}}
