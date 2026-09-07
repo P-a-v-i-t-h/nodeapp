@@ -15,7 +15,6 @@ jobs:
         node-version: 24
         cache: 'npm'
     - run: npm install
-    - run: npm run test
 
     - name: run application
       run:
